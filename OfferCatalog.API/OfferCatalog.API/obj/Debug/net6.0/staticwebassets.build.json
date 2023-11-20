@@ -1,0 +1,11 @@
+{
+  "Version": 1,
+  "Hash": "CiXJIOXdpX1IhaLayvH5CyPEmoWHU5ZUYOKa27Iq2Ow=",
+  "Source": "OfferCatalog.API",
+  "BasePath": "_content/OfferCatalog.API",
+  "Mode": "Default",
+  "ManifestType": "Build",
+  "ReferencedProjectsConfiguration": [],
+  "DiscoveryPatterns": [],
+  "Assets": []
+}
