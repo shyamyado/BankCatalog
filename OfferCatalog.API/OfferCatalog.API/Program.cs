@@ -18,9 +18,9 @@ namespace OfferCatalog.API
             builder.Services.AddSwaggerGen();
 
             builder.Services.AddDbContext<CatalogDBContext>();
-            builder.Services.AddDbContext<CatalogDBContext>();
-            builder.Services.AddScoped<IBenefitRepository, BenefitRepository>();
-            builder.Services.AddScoped<IBenefitService, BenefitService>();
+            builder.Services.AddScoped<ICatalogRepository, CatalogRepository>();
+            builder.Services.AddScoped<IRewardsAndBenefitsRepository, RewardsAndBenefitsRepository>();
+            builder.Services.AddScoped<ICatalogService, CatalogService>();  
 
             var app = builder.Build();
 

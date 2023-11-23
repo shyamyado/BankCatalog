@@ -6,36 +6,58 @@ using System.Net;
 namespace OfferCatalog.API.Controllers
 {
     [ApiController]
-    [Route("api/controller")]
+    [Route("api/[controller]")]
     public class CatalogController : Controller
     {
 
-        private readonly IBenefitService _beneficiaryService;
+        private readonly ICatalogService _catalogService;
 
-        public CatalogController(IBenefitService beneficiaryService)
+        public CatalogController( ICatalogService catalogService)
         {
-               _beneficiaryService = beneficiaryService;
+            _catalogService = catalogService;
         }
+
         [HttpGet]
-        [Route("offers")]
         [ProducesResponseType(typeof(string), (int)HttpStatusCode.OK)]
-        public async Task<ActionResult<List<Item>>> GetAllOffers()
+        public async Task<ActionResult<List<Item>>> GetAllCatalogItems()
         {
-            var res = await _beneficiaryService.GetBenefitList();
+            var res = await _catalogService.GetAllItems();
+            return Ok(res);
+        }
+
+        [HttpGet]
+        [Route("{id}")]
+        [ProducesResponseType(typeof(Item),(int)HttpStatusCode.OK)]
+        public async Task<ActionResult<Item>> GetCatalogItemById([FromRoute] int id)
+        {
+            var res = await _catalogService.GetItemById(id);
             return Ok(res);
         }
 
         [HttpPost]
-        [Route("offers")]
-        [ProducesResponseType(typeof(string), (int)HttpStatusCode.OK)]
-        public ActionResult<string> AddBenefit(Benefit item)
+        public async Task<IActionResult> AddCatalogItem(ItemNew item)
         {
             if (item == null)
             {
+                return BadRequest(new {message ="New Item cannot be null"});
+            }
+            _catalogService.AddItem(item);
+            return Ok();
+        }
+
+        [HttpPut]
+        public async Task<IActionResult> UpdateCatalogItem([FromBody]Item item)
+        {
+            if(item.ItemId == 0 || item is null)
+            {
                 return BadRequest();
             }
-            _beneficiaryService.AddBenefit(item);
-            return Ok("Added");
+            _catalogService.UpdateItem(item);
+            return Ok(item);
         }
+
+
+
+        
     }
 }
