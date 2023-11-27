@@ -9,17 +9,18 @@ namespace OfferCatalog.API.Infrastructure.EntityConfiguration
         public void Configure(EntityTypeBuilder<Item> builder)
         {
             builder.ToTable("Item");
-            builder.HasKey(x => x.ItemId).IsClustered();
+            builder.HasKey(x => x.Id).IsClustered();
             builder.Property(x => x.Name).IsRequired();
             builder.Property(x => x.Description);
+            builder.Property(x => x.ShortDescription);
             builder.Property(x => x.JoiningFees);
-            builder.Property(x => x.Category);
-            builder.Property(x => x.SubCategory);
-            builder.Property(x => x.Type);
-            builder.Property(x => x.DepartmentId);
+            builder.Property(x => x.AnnualFees);
+            builder.HasOne(ci => ci.Category)
+              .WithMany()
+              .HasForeignKey(ci => ci.CategoryId);
             builder.Property(x => x.IsActive);
             builder.Property(x => x.IsPhysical);
-            builder.Property(x => x.ImageUrl);
+            builder.Property(x => x.Image);
             builder.Property(x => x.CreatedAt);
             builder.Property(x => x.UpdatedAt);
         }

@@ -15,6 +15,7 @@ namespace OfferCatalog.API.Infrastructure
         public DbSet<Item> Items { get; set; }
         public DbSet<Price> Prices { get; set; }
         public DbSet<RewardPoints> RewardPoints { get; set; }
+        public DbSet<Category> Categories { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -24,6 +25,7 @@ namespace OfferCatalog.API.Infrastructure
             modelBuilder.ApplyConfiguration(new ItemEntityTypeConfiguration());
             modelBuilder.ApplyConfiguration(new PriceEntityTypeConfiguraiotn());
             modelBuilder.ApplyConfiguration(new RewardPointsEnitityTypeConfiguration());
+            modelBuilder.ApplyConfiguration(new CategoryEntityTypeConfiguration());
         }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)

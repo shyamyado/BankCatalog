@@ -9,9 +9,12 @@ namespace OfferCatalog.API.Infrastructure.EntityConfiguration
         public void Configure(EntityTypeBuilder<Price> builder)
         {
             builder.ToTable("Price");
-            builder.HasKey(x => x.PriceId).IsClustered();
-            builder.Property(x => x.DefaultCreditLimit).IsRequired();
-            builder.Property(x => x.AnnualFees);
+            builder.HasKey(x => x.Id).IsClustered();
+            builder.HasOne(x => x.Item)
+              .WithMany()
+              .HasForeignKey(x => x.ItemId);
+            builder.Property(x => x.Amount).IsRequired();
+            builder.Property(x => x.WithdrawlLimit);
             builder.Property(x => x.UpdatedAt);
             builder.Property(x => x.CreatedAt);
         }

@@ -2,9 +2,11 @@
 {
     public class Price
     {
-        public int PriceId { get; set; }
-        public decimal DefaultCreditLimit { get; set; }
-        public decimal AnnualFees { get; set; }
+        public int Id { get; set; }
+        public int ItemId { get; set; }
+        public Item Item { get; set; }
+        public decimal Amount { get; set; }
+        public decimal WithdrawlLimit { get; set; }
         public DateTime UpdatedAt { get; set; }
         public DateTime CreatedAt { get; set; }
 

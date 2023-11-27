@@ -15,7 +15,6 @@ namespace OfferCatalog.API.Services
         public async Task<Item> AddItem(ItemNew item)
         {
             var res= await _catalogRepository.AddItem(item);
-            _catalogRepository.Save();
             return res;
         }
 
@@ -29,11 +28,12 @@ namespace OfferCatalog.API.Services
             return res;
         }
 
-        public async Task<Item> UpdateItem(Item item)
+        public async Task<Item> UpdateItem(ItemUpdate item)
         {
-            _catalogRepository.UpdateItem(item);
-            _catalogRepository.Save();
-            return item;
+            var res = await _catalogRepository.UpdateItem(item);
+            return res;
         }
+
+        
     }
 }

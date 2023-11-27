@@ -9,10 +9,11 @@ namespace OfferCatalog.API.Infrastructure.EntityConfiguration
         public void Configure(EntityTypeBuilder<Benefit> builder)
         {
             builder.ToTable("Benefits");
-            builder.HasKey(x => x.BenefitId).IsClustered();
-            builder.Property(x => x.BenefitName).IsRequired();
-            builder.Property(x => x.BenefitAmount);
-
+            builder.HasKey(x => x.Id).IsClustered();
+            builder.HasOne(x => x.Item)
+              .WithMany()
+              .HasForeignKey(x => x.ItemId);
+            builder.Property(x => x.Benefits);
         }
     }
 }

@@ -26,40 +26,40 @@ namespace OfferCatalog.API.Infrastructure.Repository
             {
                 Name = item.Name,
                 Description = item.Description,
+                ShortDescription = item.ShortDescription,
                 JoiningFees = item.JoiningFees,
-
-                Category = item.Category,
-                SubCategory = item.SubCategory,
-                Type = item.Type,
-                DepartmentId = item.DepartmentId,
+                AnnualFees = item.AnnualFees,
+                CategoryId = item.CategoryId,
                 IsActive = item.IsActive,
                 IsPhysical = item.IsPhysical,
-                ImageUrl = item.ImageUrl,
+                Image = item.Image,
                 CreatedAt = DateTime.Now,
                 UpdatedAt = DateTime.Now
             };
             _dbContext.Items.Add(new_item);
+            await _dbContext.SaveChangesAsync();
             return new_item;
         }
 
         public async Task<Item> GetItemById(int id)
         {
-            var res = await _dbContext.Items.FirstOrDefaultAsync(x => x.ItemId == id);
+            var res = await _dbContext.Items.FirstOrDefaultAsync(x => x.Id == id);
             return res;
         }
-        public async Task<Item> UpdateItem(Item item)
+        public async Task<Item> UpdateItem(ItemUpdate item)
         {
-            Item itemToUpdate = await _dbContext.Items.FirstOrDefaultAsync(x => x.ItemId == item.ItemId);
+            var itemToUpdate = await _dbContext.Items.FirstOrDefaultAsync(x => x.Id == item.Id);
             if (itemToUpdate != null)
             {
                 _dbContext.Entry(itemToUpdate).CurrentValues.SetValues(item);
+                await _dbContext.SaveChangesAsync();
             }
-            _dbContext.SaveChanges();
-            return item;
+            var res = await _dbContext.Items.FirstOrDefaultAsync(x => x.Id == item.Id);
+            return res;
         }
         public void UpDateItemIsActive(int ItemId, int status)
         {
-            _dbContext.Items.FirstOrDefault(x => x.ItemId == ItemId);
+            _dbContext.Items.FirstOrDefault(x => x.Id == ItemId);
         }
 
         public void UpdateDepartment(Department department)
@@ -77,10 +77,7 @@ namespace OfferCatalog.API.Infrastructure.Repository
             throw new NotImplementedException();
         }
 
-        public void Save()
-        {
-            _dbContext.SaveChanges();
-        }
+        
 
 
     }

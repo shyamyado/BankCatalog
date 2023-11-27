@@ -2,17 +2,18 @@
 {
     public class Item
     {
-        public int ItemId { get; set; }
+        public int Id { get; set; }
         public string Name { get; set; }
         public string Description { get; set; }
+        public string ShortDescription { get; set; }
         public decimal JoiningFees { get; set; }
-        public string Category { get; set; }
-        public string SubCategory { get; set; }
-        public string Type { get; set; }
-        public int DepartmentId { get; set; }
+        public decimal AnnualFees { get; set; }
+        public int CategoryId { get; set; }
+
+        public Category Category { get; set; }
         public bool IsActive { get; set; }
         public bool IsPhysical { get; set; }
-        public string ImageUrl { get; set; }
+        public string Image { get; set; }
         public DateTime CreatedAt { get; set; }
         public DateTime UpdatedAt { get; set;}
     }

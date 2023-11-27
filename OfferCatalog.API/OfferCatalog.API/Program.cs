@@ -19,8 +19,10 @@ namespace OfferCatalog.API
 
             builder.Services.AddDbContext<CatalogDBContext>();
             builder.Services.AddScoped<ICatalogRepository, CatalogRepository>();
+            builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
             builder.Services.AddScoped<IRewardsAndBenefitsRepository, RewardsAndBenefitsRepository>();
             builder.Services.AddScoped<ICatalogService, CatalogService>();  
+            builder.Services.AddScoped<ICategoryService, CategoryService>();
 
             var app = builder.Build();
 

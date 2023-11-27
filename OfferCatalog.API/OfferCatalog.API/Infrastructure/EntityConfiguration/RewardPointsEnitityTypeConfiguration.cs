@@ -11,6 +11,9 @@ namespace OfferCatalog.API.Infrastructure.EntityConfiguration
             builder.ToTable("RewardPoints");
             builder.HasKey(x => x.PointId).IsClustered();
             builder.Property(x => x.Points);
+            builder.HasOne(x => x.Item)
+              .WithMany()
+              .HasForeignKey(x => x.ItemId);
             builder.Property(x => x.AddedDate);
             builder.Property(x => x.ExpiredDate);
 

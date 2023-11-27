@@ -2,8 +2,9 @@
 {
     public class Benefit
     {
-        public int BenefitId { get; set; }
-        public string BenefitName { get; set; }
-        public decimal BenefitAmount { get; set; }
+        public int Id { get; set; }
+        public int ItemId { get; set; }
+        public Item Item { get; set; }
+        public string Benefits { get; set; }
     }
 }

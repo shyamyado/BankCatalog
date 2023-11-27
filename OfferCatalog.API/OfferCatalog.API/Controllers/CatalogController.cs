@@ -12,7 +12,7 @@ namespace OfferCatalog.API.Controllers
 
         private readonly ICatalogService _catalogService;
 
-        public CatalogController( ICatalogService catalogService)
+        public CatalogController(ICatalogService catalogService)
         {
             _catalogService = catalogService;
         }
@@ -27,7 +27,7 @@ namespace OfferCatalog.API.Controllers
 
         [HttpGet]
         [Route("{id}")]
-        [ProducesResponseType(typeof(Item),(int)HttpStatusCode.OK)]
+        [ProducesResponseType(typeof(Item), (int)HttpStatusCode.OK)]
         public async Task<ActionResult<Item>> GetCatalogItemById([FromRoute] int id)
         {
             var res = await _catalogService.GetItemById(id);
@@ -39,25 +39,25 @@ namespace OfferCatalog.API.Controllers
         {
             if (item == null)
             {
-                return BadRequest(new {message ="New Item cannot be null"});
+                return BadRequest(new { message = "New Item cannot be null" });
             }
-            _catalogService.AddItem(item);
+            await _catalogService.AddItem(item);
             return Ok();
         }
 
         [HttpPut]
-        public async Task<IActionResult> UpdateCatalogItem([FromBody]Item item)
+        public async Task<IActionResult> UpdateCatalogItem([FromBody] ItemUpdate item)
         {
-            if(item.ItemId == 0 || item is null)
+            if (item != null)
             {
-                return BadRequest();
+                _catalogService.UpdateItem(item);
+                return Ok(item);
             }
-            _catalogService.UpdateItem(item);
-            return Ok(item);
+            return BadRequest();
         }
 
 
 
-        
+
     }
 }

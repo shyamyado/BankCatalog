@@ -1,8 +1,7 @@
 ﻿namespace OfferCatalog.API.Models
 {
-    public class Department
+    public class DepartmentNew
     {
-        public int Id { get; set; }
         public string Name { get; set; }
         public string Description { get; set; }
     }
