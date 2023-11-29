@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using OfferCatalog.API.Infrastructure.EntityConfiguration;
 using OfferCatalog.API.Models;
+using OfferCatalog.API.ViewModels;
 
 namespace OfferCatalog.API.Infrastructure
 {
@@ -12,7 +13,7 @@ namespace OfferCatalog.API.Infrastructure
 
         public DbSet<Benefit> Benefits { get; set; }
         public DbSet<Department> Departments { get; set; }
-        public DbSet<Item> Items { get; set; }
+        public DbSet<ItemViewModel> Items { get; set; }
         public DbSet<Price> Prices { get; set; }
         public DbSet<RewardPoints> RewardPoints { get; set; }
         public DbSet<Category> Categories { get; set; }

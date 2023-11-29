@@ -1,5 +1,7 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.Data.SqlClient;
+using Microsoft.EntityFrameworkCore;
 using OfferCatalog.API.Models;
+using OfferCatalog.API.ViewModels;
 
 namespace OfferCatalog.API.Infrastructure.Repository
 {
@@ -14,15 +16,21 @@ namespace OfferCatalog.API.Infrastructure.Repository
             _dbContext = catalogDBContext;
         }
 
-        public async Task<List<Item>> GetAllItems()
+        public async Task<List<ItemViewModel>> GetAllItems(int page, int pageSize)
         {
-            var res = await _dbContext.Items.ToListAsync();
+            int itemsToSkip = (page - 1) * pageSize;
+
+            var res = await _dbContext.Items
+                        .OrderBy(item => item.Id)
+                        .Skip(itemsToSkip)
+                        .Take(pageSize)
+                        .ToListAsync();
             return res;
         }
 
-        public async Task<Item> AddItem(ItemNew item)
+        public async Task<(ItemViewModel, string)> AddItem(ItemCreate item)
         {
-            Item new_item = new Item
+            ItemViewModel new_item = new ItemViewModel
             {
                 Name = item.Name,
                 Description = item.Description,
@@ -36,22 +44,39 @@ namespace OfferCatalog.API.Infrastructure.Repository
                 CreatedAt = DateTime.Now,
                 UpdatedAt = DateTime.Now
             };
-            _dbContext.Items.Add(new_item);
-            await _dbContext.SaveChangesAsync();
-            return new_item;
+            try
+            {
+                _dbContext.Items.Add(new_item);
+                await _dbContext.SaveChangesAsync();
+                return (new_item, null);
+            }
+            catch (DbUpdateException ex)
+            {
+                if (ex.InnerException is SqlException sqlException && sqlException.Number == 547)
+                {
+                    Console.WriteLine("Foreign key constraint violation. CategoryId does not exist.");
+                    return (null, "CategoryId does not exist");
+                }
+                else
+                {
+                    Console.WriteLine($"DbUpdateException: {ex.Message}");
+                    return (null, ex.Message);
+                }
+            }
         }
 
-        public async Task<Item> GetItemById(int id)
+        public async Task<ItemViewModel> GetItemById(int id)
         {
             var res = await _dbContext.Items.FirstOrDefaultAsync(x => x.Id == id);
             return res;
         }
-        public async Task<Item> UpdateItem(ItemUpdate item)
+        public async Task<ItemViewModel> UpdateItem(ItemUpdate item)
         {
-            var itemToUpdate = await _dbContext.Items.FirstOrDefaultAsync(x => x.Id == item.Id);
+            var itemToUpdate = _dbContext.Items.FirstOrDefault(x => x.Id == item.Id);
             if (itemToUpdate != null)
             {
                 _dbContext.Entry(itemToUpdate).CurrentValues.SetValues(item);
+                //_dbContext.Entry(itemToUpdate).State = EntityState.Modified;
                 await _dbContext.SaveChangesAsync();
             }
             var res = await _dbContext.Items.FirstOrDefaultAsync(x => x.Id == item.Id);
@@ -77,7 +102,7 @@ namespace OfferCatalog.API.Infrastructure.Repository
             throw new NotImplementedException();
         }
 
-        
+
 
 
     }

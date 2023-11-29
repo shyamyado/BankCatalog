@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.Data.SqlClient;
+using Microsoft.EntityFrameworkCore;
 using OfferCatalog.API.Models;
 
 namespace OfferCatalog.API.Infrastructure.Repository

@@ -1,13 +1,14 @@
 ﻿using OfferCatalog.API.Models;
+using OfferCatalog.API.ViewModels;
 
 namespace OfferCatalog.API.Services
 {
     public interface ICatalogService
     {
-        public Task<Item> AddItem(ItemNew item);
-        public Task<Item> GetItemById(int id);
-        public Task<List<Item>> GetAllItems();
-        public Task<Item> UpdateItem(ItemUpdate item);
+        public Task<(ItemViewModel, string)> AddItem(ItemCreate item);
+        public Task<ItemViewModel> GetItemById(int id);
+        public Task<List<ItemViewModel>> GetAllItems(int page, int pageSize);
+        public Task<ItemViewModel> UpdateItem(ItemUpdate item);
 
     }
 }

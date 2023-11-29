@@ -1,12 +1,12 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using OfferCatalog.API.Models;
+using OfferCatalog.API.ViewModels;
 
 namespace OfferCatalog.API.Infrastructure.EntityConfiguration
 {
-    public class ItemEntityTypeConfiguration : IEntityTypeConfiguration<Item>
+    public class ItemEntityTypeConfiguration : IEntityTypeConfiguration<ItemViewModel>
     {
-        public void Configure(EntityTypeBuilder<Item> builder)
+        public void Configure(EntityTypeBuilder<ItemViewModel> builder)
         {
             builder.ToTable("Item");
             builder.HasKey(x => x.Id).IsClustered();
