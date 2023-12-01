@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "kVbohdlkRhuapSooJfOOB2+4i4m9gfeE04C4eTDwq4wYiXxkAvA3pScg/Rtoivet0h0OrFbuGMtbokIgNp0CyQ==",
+  "dgSpecHash": "LsUi5MZowv8BSd3FfxCqUj3VLsQf20WrfExd9V+Cuo3PHHDP+EIyrXaGBouoWKZCbLkeVYHkK0KSlJd9nmTuOA==",
   "success": true,
   "projectFilePath": "D:\\repos\\BankCatalog\\OfferCatalog.API\\OfferCatalog.API\\OfferCatalog.API.csproj",
   "expectedPackageFiles": [
@@ -43,6 +43,9 @@
     "C:\\Users\\shyam\\.nuget\\packages\\microsoft.sqlserver.server\\1.0.0\\microsoft.sqlserver.server.1.0.0.nupkg.sha512",
     "C:\\Users\\shyam\\.nuget\\packages\\microsoft.win32.systemevents\\6.0.0\\microsoft.win32.systemevents.6.0.0.nupkg.sha512",
     "C:\\Users\\shyam\\.nuget\\packages\\mono.texttemplating\\2.2.1\\mono.texttemplating.2.2.1.nupkg.sha512",
+    "C:\\Users\\shyam\\.nuget\\packages\\nlog\\5.2.7\\nlog.5.2.7.nupkg.sha512",
+    "C:\\Users\\shyam\\.nuget\\packages\\nlog.config\\4.7.15\\nlog.config.4.7.15.nupkg.sha512",
+    "C:\\Users\\shyam\\.nuget\\packages\\nlog.schema\\4.7.15\\nlog.schema.4.7.15.nupkg.sha512",
     "C:\\Users\\shyam\\.nuget\\packages\\swashbuckle.aspnetcore\\6.2.3\\swashbuckle.aspnetcore.6.2.3.nupkg.sha512",
     "C:\\Users\\shyam\\.nuget\\packages\\swashbuckle.aspnetcore.swagger\\6.2.3\\swashbuckle.aspnetcore.swagger.6.2.3.nupkg.sha512",
     "C:\\Users\\shyam\\.nuget\\packages\\swashbuckle.aspnetcore.swaggergen\\6.2.3\\swashbuckle.aspnetcore.swaggergen.6.2.3.nupkg.sha512",
