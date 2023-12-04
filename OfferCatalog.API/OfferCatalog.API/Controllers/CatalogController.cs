@@ -7,15 +7,19 @@ using System.Net;
 namespace OfferCatalog.API.Controllers
 {
     [ApiController]
-    [Route("api/[controller]")]
+    [Route("api/v1/[controller]")]
     public class CatalogController : Controller
     {
 
         private readonly ICatalogService _catalogService;
+        private readonly IApplicationService _applicationService;
+        private readonly IItemPriceChangeService _itemPriceChangeService;
 
-        public CatalogController(ICatalogService catalogService)
+        public CatalogController(ICatalogService catalogService, IApplicationService applicationService, IItemPriceChangeService itemPriceChangeService)
         {
             _catalogService = catalogService;
+            _applicationService = applicationService;
+            _itemPriceChangeService = itemPriceChangeService;
         }
 
         [HttpGet]
@@ -75,6 +79,33 @@ namespace OfferCatalog.API.Controllers
             return Ok(item);
         }
 
+        [HttpPost]
+        [Route("applyCard")]
+        [ProducesResponseType(typeof(string), (int)HttpStatusCode.OK)]
+        [ProducesResponseType(typeof(string), (int)HttpStatusCode.BadRequest)]
+        public async Task<ActionResult<string>> ApplyCard([FromBody]ApplicationForm form)
+        {
+            var res = _applicationService.ApplyCard(form);
+            if (res == null)
+            {
+                return BadRequest();
+            }
+            return Ok();
+        }
+
+        [HttpPost]
+        [Route("updateprice")]
+        [ProducesResponseType(typeof(string), (int)HttpStatusCode.OK)]
+        [ProducesResponseType(typeof (string), (int)HttpStatusCode.BadRequest)]
+        public async Task<ActionResult<string>> UpdatePrice([FromBody]ItemPriceChange item)
+        {
+            var res = _itemPriceChangeService.PriceChange(item);
+            if (res == null)
+            {
+                return BadRequest("Price Change not effective");
+            }
+            return Ok(res);
+        }
 
 
 

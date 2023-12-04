@@ -11,6 +11,7 @@ namespace OfferCatalog.API.Infrastructure.Repository
 
         public readonly CatalogDBContext _dbContext;
 
+
         public CatalogRepository(CatalogDBContext catalogDBContext)
         {
             _dbContext = catalogDBContext;

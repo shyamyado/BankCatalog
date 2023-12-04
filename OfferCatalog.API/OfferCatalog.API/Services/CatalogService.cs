@@ -1,8 +1,10 @@
-﻿using NLog;
+﻿using CatalogEventBus;
+using NLog;
 using NLog.Targets;
 using OfferCatalog.API.Infrastructure.Repository;
 using OfferCatalog.API.Models;
 using OfferCatalog.API.ViewModels;
+using System.Data.SqlTypes;
 
 namespace OfferCatalog.API.Services
 {
@@ -10,10 +12,12 @@ namespace OfferCatalog.API.Services
     {
         private readonly ICatalogRepository _catalogRepository;
         private readonly Logger _logger = LogManager.GetCurrentClassLogger();
+        private readonly IRabbitMQPersistantConnection _rabbitMQPersistantConnection;
 
-        public CatalogService(ICatalogRepository catalogRepository)
+        public CatalogService(ICatalogRepository catalogRepository, IRabbitMQPersistantConnection rabbitMQPersistantConnection)
         {
             _catalogRepository = catalogRepository;
+            _rabbitMQPersistantConnection = rabbitMQPersistantConnection;
         }
 
         public async Task<(ItemViewModel, string)> AddItem(ItemCreate item)
@@ -29,13 +33,7 @@ namespace OfferCatalog.API.Services
             {
 
                 var result = await _catalogRepository.GetAllItems(page, pageSize);
-                _logger.Info($"Retrieved {result.Count} items");
-                _logger.Info($"{DateTime.Now} : Shyam : Retrieved {result.Count} items");
-
-                Console.WriteLine($"Retrieved {result.Count} items");
-                Console.WriteLine("-------------------");
-                Console.WriteLine(fileTarget);
-                Console.WriteLine("-----------------------------");
+                _logger.Info($"{DateTime.Now} : Retrieved {result.Count} items");
                 return result;
             }
             catch (Exception ex)
@@ -55,6 +53,7 @@ namespace OfferCatalog.API.Services
             var res = await _catalogRepository.UpdateItem(item);
             return res;
         }
+
 
 
     }

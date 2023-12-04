@@ -10,6 +10,7 @@ D:\repos\BankCatalog\OfferCatalog.API\OfferCatalog.API\bin\Debug\net6.0\Azure.Co
 D:\repos\BankCatalog\OfferCatalog.API\OfferCatalog.API\bin\Debug\net6.0\Azure.Identity.dll
 D:\repos\BankCatalog\OfferCatalog.API\OfferCatalog.API\bin\Debug\net6.0\Humanizer.dll
 D:\repos\BankCatalog\OfferCatalog.API\OfferCatalog.API\bin\Debug\net6.0\Microsoft.Bcl.AsyncInterfaces.dll
+D:\repos\BankCatalog\OfferCatalog.API\OfferCatalog.API\bin\Debug\net6.0\Microsoft.Bcl.TimeProvider.dll
 D:\repos\BankCatalog\OfferCatalog.API\OfferCatalog.API\bin\Debug\net6.0\Microsoft.Data.SqlClient.dll
 D:\repos\BankCatalog\OfferCatalog.API\OfferCatalog.API\bin\Debug\net6.0\Microsoft.EntityFrameworkCore.dll
 D:\repos\BankCatalog\OfferCatalog.API\OfferCatalog.API\bin\Debug\net6.0\Microsoft.EntityFrameworkCore.Abstractions.dll
@@ -39,6 +40,9 @@ D:\repos\BankCatalog\OfferCatalog.API\OfferCatalog.API\bin\Debug\net6.0\Microsof
 D:\repos\BankCatalog\OfferCatalog.API\OfferCatalog.API\bin\Debug\net6.0\Microsoft.Win32.SystemEvents.dll
 D:\repos\BankCatalog\OfferCatalog.API\OfferCatalog.API\bin\Debug\net6.0\Mono.TextTemplating.dll
 D:\repos\BankCatalog\OfferCatalog.API\OfferCatalog.API\bin\Debug\net6.0\NLog.dll
+D:\repos\BankCatalog\OfferCatalog.API\OfferCatalog.API\bin\Debug\net6.0\Polly.dll
+D:\repos\BankCatalog\OfferCatalog.API\OfferCatalog.API\bin\Debug\net6.0\Polly.Core.dll
+D:\repos\BankCatalog\OfferCatalog.API\OfferCatalog.API\bin\Debug\net6.0\RabbitMQ.Client.dll
 D:\repos\BankCatalog\OfferCatalog.API\OfferCatalog.API\bin\Debug\net6.0\Swashbuckle.AspNetCore.Swagger.dll
 D:\repos\BankCatalog\OfferCatalog.API\OfferCatalog.API\bin\Debug\net6.0\Swashbuckle.AspNetCore.SwaggerGen.dll
 D:\repos\BankCatalog\OfferCatalog.API\OfferCatalog.API\bin\Debug\net6.0\Swashbuckle.AspNetCore.SwaggerUI.dll
@@ -52,6 +56,7 @@ D:\repos\BankCatalog\OfferCatalog.API\OfferCatalog.API\bin\Debug\net6.0\System.S
 D:\repos\BankCatalog\OfferCatalog.API\OfferCatalog.API\bin\Debug\net6.0\System.Security.Permissions.dll
 D:\repos\BankCatalog\OfferCatalog.API\OfferCatalog.API\bin\Debug\net6.0\System.Text.Encodings.Web.dll
 D:\repos\BankCatalog\OfferCatalog.API\OfferCatalog.API\bin\Debug\net6.0\System.Text.Json.dll
+D:\repos\BankCatalog\OfferCatalog.API\OfferCatalog.API\bin\Debug\net6.0\System.Threading.Channels.dll
 D:\repos\BankCatalog\OfferCatalog.API\OfferCatalog.API\bin\Debug\net6.0\System.Windows.Extensions.dll
 D:\repos\BankCatalog\OfferCatalog.API\OfferCatalog.API\bin\Debug\net6.0\runtimes\unix\lib\net6.0\Microsoft.Data.SqlClient.dll
 D:\repos\BankCatalog\OfferCatalog.API\OfferCatalog.API\bin\Debug\net6.0\runtimes\win\lib\net6.0\Microsoft.Data.SqlClient.dll
@@ -66,6 +71,8 @@ D:\repos\BankCatalog\OfferCatalog.API\OfferCatalog.API\bin\Debug\net6.0\runtimes
 D:\repos\BankCatalog\OfferCatalog.API\OfferCatalog.API\bin\Debug\net6.0\runtimes\win\lib\net6.0\System.Security.Cryptography.ProtectedData.dll
 D:\repos\BankCatalog\OfferCatalog.API\OfferCatalog.API\bin\Debug\net6.0\runtimes\browser\lib\net6.0\System.Text.Encodings.Web.dll
 D:\repos\BankCatalog\OfferCatalog.API\OfferCatalog.API\bin\Debug\net6.0\runtimes\win\lib\net6.0\System.Windows.Extensions.dll
+D:\repos\BankCatalog\OfferCatalog.API\OfferCatalog.API\bin\Debug\net6.0\CatalogEventBus.dll
+D:\repos\BankCatalog\OfferCatalog.API\OfferCatalog.API\bin\Debug\net6.0\CatalogEventBus.pdb
 D:\repos\BankCatalog\OfferCatalog.API\OfferCatalog.API\obj\Debug\net6.0\OfferCatalog.API.csproj.AssemblyReference.cache
 D:\repos\BankCatalog\OfferCatalog.API\OfferCatalog.API\obj\Debug\net6.0\OfferCatalog.API.GeneratedMSBuildEditorConfig.editorconfig
 D:\repos\BankCatalog\OfferCatalog.API\OfferCatalog.API\obj\Debug\net6.0\OfferCatalog.API.AssemblyInfoInputs.cache
@@ -88,3 +95,4 @@ D:\repos\BankCatalog\OfferCatalog.API\OfferCatalog.API\obj\Debug\net6.0\refint\O
 D:\repos\BankCatalog\OfferCatalog.API\OfferCatalog.API\obj\Debug\net6.0\OfferCatalog.API.pdb
 D:\repos\BankCatalog\OfferCatalog.API\OfferCatalog.API\obj\Debug\net6.0\OfferCatalog.API.genruntimeconfig.cache
 D:\repos\BankCatalog\OfferCatalog.API\OfferCatalog.API\obj\Debug\net6.0\ref\OfferCatalog.API.dll
+D:\repos\BankCatalog\OfferCatalog.API\OfferCatalog.API\bin\Debug\net6.0\NLog.Extensions.Logging.dll

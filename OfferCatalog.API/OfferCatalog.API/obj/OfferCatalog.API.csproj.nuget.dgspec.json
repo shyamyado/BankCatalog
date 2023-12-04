@@ -4,14 +4,14 @@
     "D:\\repos\\BankCatalog\\OfferCatalog.API\\OfferCatalog.API\\OfferCatalog.API.csproj": {}
   },
   "projects": {
-    "D:\\repos\\BankCatalog\\OfferCatalog.API\\OfferCatalog.API\\OfferCatalog.API.csproj": {
+    "D:\\repos\\BankCatalog\\OfferCatalog.API\\CatalogEventBus\\CatalogEventBus.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\repos\\BankCatalog\\OfferCatalog.API\\OfferCatalog.API\\OfferCatalog.API.csproj",
-        "projectName": "OfferCatalog.API",
-        "projectPath": "D:\\repos\\BankCatalog\\OfferCatalog.API\\OfferCatalog.API\\OfferCatalog.API.csproj",
+        "projectUniqueName": "D:\\repos\\BankCatalog\\OfferCatalog.API\\CatalogEventBus\\CatalogEventBus.csproj",
+        "projectName": "CatalogEventBus",
+        "projectPath": "D:\\repos\\BankCatalog\\OfferCatalog.API\\CatalogEventBus\\CatalogEventBus.csproj",
         "packagesPath": "C:\\Users\\shyam\\.nuget\\packages\\",
-        "outputPath": "D:\\repos\\BankCatalog\\OfferCatalog.API\\OfferCatalog.API\\obj\\",
+        "outputPath": "D:\\repos\\BankCatalog\\OfferCatalog.API\\CatalogEventBus\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
@@ -45,6 +45,84 @@
         "net6.0": {
           "targetAlias": "net6.0",
           "dependencies": {
+            "NLog.Extensions.Logging": {
+              "target": "Package",
+              "version": "[5.3.5, )"
+            },
+            "Polly": {
+              "target": "Package",
+              "version": "[8.2.0, )"
+            },
+            "RabbitMQ.Client": {
+              "target": "Package",
+              "version": "[6.7.0, )"
+            }
+          },
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48",
+            "net481"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "frameworkReferences": {
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.100\\RuntimeIdentifierGraph.json"
+        }
+      }
+    },
+    "D:\\repos\\BankCatalog\\OfferCatalog.API\\OfferCatalog.API\\OfferCatalog.API.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "D:\\repos\\BankCatalog\\OfferCatalog.API\\OfferCatalog.API\\OfferCatalog.API.csproj",
+        "projectName": "OfferCatalog.API",
+        "projectPath": "D:\\repos\\BankCatalog\\OfferCatalog.API\\OfferCatalog.API\\OfferCatalog.API.csproj",
+        "packagesPath": "C:\\Users\\shyam\\.nuget\\packages\\",
+        "outputPath": "D:\\repos\\BankCatalog\\OfferCatalog.API\\OfferCatalog.API\\obj\\",
+        "projectStyle": "PackageReference",
+        "fallbackFolders": [
+          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
+        ],
+        "configFilePaths": [
+          "C:\\Users\\shyam\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+        ],
+        "originalTargetFrameworks": [
+          "net6.0"
+        ],
+        "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "D:\\Software Setup\\dotNet Nuget": {},
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "net6.0": {
+            "targetAlias": "net6.0",
+            "projectReferences": {
+              "D:\\repos\\BankCatalog\\OfferCatalog.API\\CatalogEventBus\\CatalogEventBus.csproj": {
+                "projectPath": "D:\\repos\\BankCatalog\\OfferCatalog.API\\CatalogEventBus\\CatalogEventBus.csproj"
+              }
+            }
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        }
+      },
+      "frameworks": {
+        "net6.0": {
+          "targetAlias": "net6.0",
+          "dependencies": {
             "Microsoft.EntityFrameworkCore": {
               "target": "Package",
               "version": "[7.0.14, )"
@@ -66,6 +144,10 @@
             "NLog.Config": {
               "target": "Package",
               "version": "[4.7.15, )"
+            },
+            "NLog.Extensions.Logging": {
+              "target": "Package",
+              "version": "[5.3.5, )"
             },
             "Swashbuckle.AspNetCore": {
               "target": "Package",
