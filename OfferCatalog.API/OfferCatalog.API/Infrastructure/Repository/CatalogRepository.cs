@@ -10,11 +10,13 @@ namespace OfferCatalog.API.Infrastructure.Repository
     {
 
         public readonly CatalogDBContext _dbContext;
+        public readonly ILogger<CatalogRepository> _logger;
 
 
-        public CatalogRepository(CatalogDBContext catalogDBContext)
+        public CatalogRepository(CatalogDBContext catalogDBContext, ILogger<CatalogRepository> logger)
         {
             _dbContext = catalogDBContext;
+            _logger = logger;
         }
 
         public async Task<List<ItemViewModel>> GetAllItems(int page, int pageSize)
@@ -29,40 +31,45 @@ namespace OfferCatalog.API.Infrastructure.Repository
             return res;
         }
 
-        public async Task<(ItemViewModel, string)> AddItem(ItemCreate item)
+        public async Task<ItemViewModel> AddItem(ItemCreate item)
         {
-            ItemViewModel new_item = new ItemViewModel
-            {
-                Name = item.Name,
-                Description = item.Description,
-                ShortDescription = item.ShortDescription,
-                JoiningFees = item.JoiningFees,
-                AnnualFees = item.AnnualFees,
-                CategoryId = item.CategoryId,
-                IsActive = item.IsActive,
-                IsPhysical = item.IsPhysical,
-                Image = item.Image,
-                CreatedAt = DateTime.Now,
-                UpdatedAt = DateTime.Now
-            };
             try
             {
+                ItemViewModel new_item = new ItemViewModel
+                {
+                    Name = item.Name,
+                    Description = item.Description,
+                    ShortDescription = item.ShortDescription,
+                    JoiningFees = item.JoiningFees,
+                    AnnualFees = item.AnnualFees,
+                    CategoryId = item.CategoryId,
+                    IsActive = item.IsActive,
+                    IsPhysical = item.IsPhysical,
+                    Image = item.Image,
+                    CreatedAt = DateTime.Now,
+                    UpdatedAt = DateTime.Now
+                };
                 _dbContext.Items.Add(new_item);
                 await _dbContext.SaveChangesAsync();
-                return (new_item, null);
+                return new_item;
             }
             catch (DbUpdateException ex)
             {
                 if (ex.InnerException is SqlException sqlException && sqlException.Number == 547)
                 {
-                    Console.WriteLine("Foreign key constraint violation. CategoryId does not exist.");
-                    return (null, "CategoryId does not exist");
+                    _logger.LogError(sqlException, "Foreign key constraint violation. CategoryId does not exist.");
+                    throw new Exception("CategoryId does not exist");
                 }
                 else
                 {
-                    Console.WriteLine($"DbUpdateException: {ex.Message}");
-                    return (null, ex.Message);
+                    _logger.LogError(ex, $"DbUpdateException: {ex.Message}");
+                    throw new Exception("Failed to add item due to a database error");
                 }
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "An unexpected error occurred while adding an item.");
+                throw new Exception("Failed to add item due to an unexpected error.");
             }
         }
 

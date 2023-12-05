@@ -107,7 +107,7 @@ namespace OfferCatalog.API.Controllers
             {
                 return BadRequest("department Id is not valid");
             }
-            var res = _categoryService.GetDepartmentById(id);
+            var res = await _categoryService.GetDepartmentById(id);
             return Ok(res);
         }
     }

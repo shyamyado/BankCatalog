@@ -101,17 +101,22 @@ namespace OfferCatalog.API.Infrastructure.Repository
             }
         }
 
-        public async Task<Category?> GetCategoryById(int id)
+        public async Task<Category> GetCategoryById(int id)
         {
             try
             {
                 var res = await _dBContext.Categories.FirstOrDefaultAsync(x => x.Id == id);
+                if (res == null)
+                {
+                    _logger.LogError($"Category with ID {id} not found.");
+                    throw new Exception($"Category with ID {id} not found.");
+                }
                 return res;
             }
             catch (DbUpdateException ex) when (ex.InnerException is SqlException sqlEx)
             {
                 _logger.LogError(sqlEx, $"Database error occurred while retrieving category with ID {id}.");
-                return null;
+                throw new Exception("Error retrieving category from the database.", ex);
 
             }
             catch(Exception ex)

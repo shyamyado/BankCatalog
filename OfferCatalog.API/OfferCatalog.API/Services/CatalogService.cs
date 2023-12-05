@@ -11,19 +11,28 @@ namespace OfferCatalog.API.Services
     public class CatalogService : ICatalogService
     {
         private readonly ICatalogRepository _catalogRepository;
-        private readonly Logger _logger = LogManager.GetCurrentClassLogger();
+        private readonly ILogger<CatalogService> _logger;
         private readonly IRabbitMQPersistantConnection _rabbitMQPersistantConnection;
 
-        public CatalogService(ICatalogRepository catalogRepository, IRabbitMQPersistantConnection rabbitMQPersistantConnection)
+        public CatalogService(ICatalogRepository catalogRepository, IRabbitMQPersistantConnection rabbitMQPersistantConnection, ILogger<CatalogService> logger)
         {
             _catalogRepository = catalogRepository;
             _rabbitMQPersistantConnection = rabbitMQPersistantConnection;
+            _logger = logger;
         }
 
-        public async Task<(ItemViewModel, string)> AddItem(ItemCreate item)
+        public async Task<ItemViewModel> AddItem(ItemCreate item)
         {
-            var (res, errorMsg) = await _catalogRepository.AddItem(item);
-            return (res, errorMsg);
+            try
+            {
+                var result = await _catalogRepository.AddItem(item);
+                return result;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "An error occurred while adding an item.");
+                throw new Exception("Failed to add item due to an unexpected error.", ex);
+            }
         }
 
         public async Task<List<ItemViewModel>> GetAllItems(int page, int pageSize)
@@ -33,12 +42,12 @@ namespace OfferCatalog.API.Services
             {
 
                 var result = await _catalogRepository.GetAllItems(page, pageSize);
-                _logger.Info($"{DateTime.Now} : Retrieved {result.Count} items");
+                _logger.LogInformation($"{DateTime.Now} : Retrieved {result.Count} items");
                 return result;
             }
             catch (Exception ex)
             {
-                _logger.Error($"Error getting all items: {ex.Message}");
+                _logger.LogError($"Error getting all items: {ex.Message}");
                 throw;
             }
         }

@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using NLog;
 using OfferCatalog.API.Models;
 using OfferCatalog.API.Services;
 using OfferCatalog.API.ViewModels;
@@ -14,24 +15,35 @@ namespace OfferCatalog.API.Controllers
         private readonly ICatalogService _catalogService;
         private readonly IApplicationService _applicationService;
         private readonly IItemPriceChangeService _itemPriceChangeService;
+        private readonly ILogger<CatalogController> _logger;
 
-        public CatalogController(ICatalogService catalogService, IApplicationService applicationService, IItemPriceChangeService itemPriceChangeService)
+        public CatalogController(ICatalogService catalogService, IApplicationService applicationService, IItemPriceChangeService itemPriceChangeService, ILogger<CatalogController> logger)
         {
-            _catalogService = catalogService;
-            _applicationService = applicationService;
-            _itemPriceChangeService = itemPriceChangeService;
+            _catalogService = catalogService ?? throw new ArgumentNullException(nameof(catalogService));
+            _applicationService = applicationService ?? throw new ArgumentNullException(nameof(applicationService));
+            _itemPriceChangeService = itemPriceChangeService ?? throw new ArgumentNullException(nameof(itemPriceChangeService));
+            _logger = logger ?? throw new ArgumentNullException(nameof(logger));
         }
 
         [HttpGet]
-        [ProducesResponseType(typeof(string), (int)HttpStatusCode.OK)]
+        [ProducesResponseType(typeof(List<ItemViewModel>), (int)HttpStatusCode.OK)]
         public async Task<ActionResult<List<ItemViewModel>>> GetAllCatalogItems([FromQuery] int page = 1, [FromQuery] int pageSize = 10)
         {
-            var res = await _catalogService.GetAllItems(page, pageSize);
-            if(res == null)
+            try
             {
-                return NotFound("No item found.");
+                var res = await _catalogService.GetAllItems(page, pageSize);
+                if (res == null)
+                {
+                    _logger.LogInformation("No items found.");
+                    return NotFound("No items found.");
+                }
+                return Ok(res);
             }
-            return Ok(res);
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "An error occurred while retrieving catalog items.");
+                return StatusCode(500, "Failed to retrieve catalog items due to an unexpected error.");
+            }
         }
 
         [HttpGet]
@@ -39,12 +51,21 @@ namespace OfferCatalog.API.Controllers
         [ProducesResponseType(typeof(ItemViewModel), (int)HttpStatusCode.OK)]
         public async Task<ActionResult<ItemViewModel>> GetCatalogItemById([FromRoute] int id)
         {
-            var res = await _catalogService.GetItemById(id);
-            if (res == null)
+            try
             {
-                return NotFound("Item not Found");
+                var res = await _catalogService.GetItemById(id);
+                if (res == null)
+                {
+                    _logger.LogInformation($"Item with ID {id} not found.");
+                    return NotFound("Item not Found");
+                }
+                return Ok(res);
             }
-            return Ok(res);
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, $"An error occurred while retrieving catalog item with ID {id}.");
+                return StatusCode(500, $"Failed to retrieve catalog item with ID {id} due to an unexpected error.");
+            }
         }
 
         [HttpPost]
@@ -52,31 +73,47 @@ namespace OfferCatalog.API.Controllers
         [ProducesResponseType((int)HttpStatusCode.BadRequest)]
         public async Task<ActionResult<ItemViewModel>> AddCatalogItem(ItemCreate item)
         {
-            if (item == null)
+            try
             {
-                return BadRequest(new { message = "New Item cannot be null" });
+                if (item == null)
+                {
+                    _logger.LogWarning("New Item cannot be null.");
+                    return BadRequest(new { message = "New Item cannot be null" });
+                }
+                var newItem = await _catalogService.AddItem(item);
+                _logger.LogInformation("Item added.");
+                return CreatedAtAction(nameof(GetCatalogItemById), new { id = newItem.Id }, newItem);
             }
-            var (newItem, error) = await _catalogService.AddItem(item);
-            if (error != null)
+            catch (Exception ex)
             {
-                return BadRequest(error);
+                _logger.LogError(ex, "An unexpected error occurred while adding an item.");
+                throw new Exception("Failed to add item due to an unexpected error.", ex);
             }
-            return CreatedAtAction(nameof(GetCatalogItemById), new { id = newItem.Id }, newItem);
         }
 
         [HttpPut]
         public async Task<IActionResult> UpdateCatalogItem([FromBody] ItemUpdate item)
         {
-            if (item == null)
+            try
             {
-                return BadRequest(new { messgage = "Item cannot be null"});
+                if (item == null)
+                {
+                    _logger.LogWarning("Item cannot be null");
+                    return BadRequest(new { messgage = "Item cannot be null" });
+                }
+                var res = await _catalogService.UpdateItem(item);
+                if (res == null)
+                {
+                    _logger.LogInformation("Item not found.");
+                    return NotFound("Item not found");
+                }
+                return Ok(item);
             }
-            var res = await _catalogService.UpdateItem(item);
-            if (res == null)
+            catch (Exception ex)
             {
-                return NotFound("Item not found");
+                _logger.LogError(ex, "An unexpected error occurred while updating a catalog item.");
+                return StatusCode(500, "Failed to update catalog item due to an unexpected error.");
             }
-            return Ok(item);
         }
 
         [HttpPost]
@@ -85,12 +122,22 @@ namespace OfferCatalog.API.Controllers
         [ProducesResponseType(typeof(string), (int)HttpStatusCode.BadRequest)]
         public async Task<ActionResult<string>> ApplyCard([FromBody]ApplicationForm form)
         {
-            var res = _applicationService.ApplyCard(form);
-            if (res == null)
+            try
             {
-                return BadRequest();
+                var res = await _applicationService.ApplyCard(form);
+                if (res == null)
+                {
+                    _logger.LogWarning("Failed to apply card.");
+                    return BadRequest();
+                }
+                _logger.LogInformation("Card applied successfully.");
+                return Ok();
             }
-            return Ok();
+            catch (Exception ex)
+            {
+                _logger.LogError($"Failed to apply card: {ex}");
+                return StatusCode(500, "Failed to apply card");
+            }
         }
 
         [HttpPost]
@@ -99,12 +146,22 @@ namespace OfferCatalog.API.Controllers
         [ProducesResponseType(typeof (string), (int)HttpStatusCode.BadRequest)]
         public async Task<ActionResult<string>> UpdatePrice([FromBody]ItemPriceChange item)
         {
-            var res = _itemPriceChangeService.PriceChange(item);
-            if (res == null)
+            try
             {
-                return BadRequest("Price Change not effective");
+                var res = await _itemPriceChangeService.PriceChange(item);
+                if (res == null)
+                {
+                    _logger.LogWarning("Price change not effective.");
+                    return BadRequest("Price Change not effective");
+                }
+                _logger.LogInformation("Price change successfull.");
+                return Ok(res);
             }
-            return Ok(res);
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "An unexpected error occurred while updating the item price.");
+                return StatusCode(500, "Failed to update item price due to an unexpected error.");
+            }
         }
 
 
