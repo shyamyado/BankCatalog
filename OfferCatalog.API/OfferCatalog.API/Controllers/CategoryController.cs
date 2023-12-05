@@ -11,10 +11,12 @@ namespace OfferCatalog.API.Controllers
     {
 
         private readonly ICategoryService _categoryService;
+        private readonly ILogger<CategoryController> _logger;
 
-        public CategoryController(ICategoryService categoryService)
+        public CategoryController(ICategoryService categoryService, ILogger<CategoryController> logger)
         {
             _categoryService = categoryService;
+            _logger = logger;
         }
 
         [HttpGet]
@@ -45,12 +47,30 @@ namespace OfferCatalog.API.Controllers
         [HttpPost]
         public async Task<IActionResult> AddCategory(CategoryNew category)
         {
-            if (category == null)
+            try
             {
-                return BadRequest();
+                if (category == null)
+                {
+                    return BadRequest("Invalid category data.");
+                }
+
+                var categoryId = await _categoryService.AddCategory(category);
+
+                if (categoryId > 0)
+                {
+                    _logger.LogInformation("Category Added.");
+                    return CreatedAtAction(nameof(GetCategoryById), new { id = categoryId }, categoryId);
+                }
+                else
+                {
+                    return StatusCode(500, "Failed to add category due to an unexpected error.");
+                }
             }
-            var res = await _categoryService.AddCategory(category);
-            return Ok(res);
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "An unexpected error occurred while adding a category.");
+                return StatusCode(500, "Failed to add category due to an unexpected error.");
+            }
         }
 
         [HttpPut]
@@ -87,7 +107,7 @@ namespace OfferCatalog.API.Controllers
             {
                 return BadRequest("department Id is not valid");
             }
-            var res = _categoryService.GetDepartmentById(id);
+            var res = await _categoryService.GetDepartmentById(id);
             return Ok(res);
         }
     }

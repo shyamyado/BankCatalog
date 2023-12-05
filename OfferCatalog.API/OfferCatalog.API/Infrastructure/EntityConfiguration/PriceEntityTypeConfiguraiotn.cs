@@ -13,8 +13,8 @@ namespace OfferCatalog.API.Infrastructure.EntityConfiguration
             builder.HasOne(x => x.Item)
               .WithMany()
               .HasForeignKey(x => x.ItemId);
-            builder.Property(x => x.Amount).IsRequired();
-            builder.Property(x => x.WithdrawlLimit);
+            builder.Property(x => x.Amount).IsRequired().HasColumnType("decimal(18,2)");
+            builder.Property(x => x.WithdrawlLimit).HasColumnType("decimal(18,2)");
             builder.Property(x => x.UpdatedAt);
             builder.Property(x => x.CreatedAt);
         }

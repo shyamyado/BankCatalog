@@ -4,14 +4,14 @@ namespace OfferCatalog.API.Infrastructure.Repository
 {
     public interface ICategoryRepository
     {
-        public Task<string> AddCategory(Category category);
+        public Task<int> AddCategory(Category category);
         public Task<Category> GetCategoryById(int id);
         public Task<List<Category>> GetAllCategories();
-        public Task<string> UpdateCategory(Category category);
+        public Task<int?> UpdateCategory(Category category);
 
-        public Task<string> AddDepartment(DepartmentNew department);
+        public Task<int> AddDepartment(DepartmentNew department);
         public Task<Department> GetDepartmentById(int id);
         public Task<List<Department>> GetAllDepartments();
-        public Task<string> UpdateDepartment(Department department);
+        public Task<int?> UpdateDepartment(Department department);
     }
 }
