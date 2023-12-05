@@ -12,23 +12,30 @@ namespace OfferCatalog.API.Infrastructure.Repository
         public readonly CatalogDBContext _dbContext;
         public readonly ILogger<CatalogRepository> _logger;
 
-
         public CatalogRepository(CatalogDBContext catalogDBContext, ILogger<CatalogRepository> logger)
         {
-            _dbContext = catalogDBContext;
-            _logger = logger;
+            _dbContext = catalogDBContext ?? throw new ArgumentNullException(nameof(catalogDBContext));
+            _logger = logger ?? throw new ArgumentNullException(nameof(logger));
         }
 
         public async Task<List<ItemViewModel>> GetAllItems(int page, int pageSize)
         {
             int itemsToSkip = (page - 1) * pageSize;
 
-            var res = await _dbContext.Items
-                        .OrderBy(item => item.Id)
-                        .Skip(itemsToSkip)
-                        .Take(pageSize)
-                        .ToListAsync();
-            return res;
+            try
+            {
+                var res = await _dbContext.Items
+                                .OrderBy(item => item.Id)
+                                .Skip(itemsToSkip)
+                                .Take(pageSize)
+                                .ToListAsync();
+                return res;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error retrieving items.");
+                throw new Exception("Error retiveing items.");
+            }
         }
 
         public async Task<ItemViewModel> AddItem(ItemCreate item)
@@ -75,35 +82,55 @@ namespace OfferCatalog.API.Infrastructure.Repository
 
         public async Task<ItemViewModel> GetItemById(int id)
         {
-            var res = await _dbContext.Items.FirstOrDefaultAsync(x => x.Id == id);
-            return res;
+            try
+            {
+                var res = await _dbContext.Items.FirstOrDefaultAsync(x => x.Id == id);
+                return res;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, $"Error retrieving item with ID {id}.");
+                throw new Exception($"Error retrieving item with ID {id}.", ex);
+            }
         }
         public async Task<ItemViewModel> UpdateItem(ItemUpdate item)
         {
-            var itemToUpdate = _dbContext.Items.FirstOrDefault(x => x.Id == item.Id);
-            if (itemToUpdate != null)
+            try
             {
-                _dbContext.Entry(itemToUpdate).CurrentValues.SetValues(item);
-                //_dbContext.Entry(itemToUpdate).State = EntityState.Modified;
-                await _dbContext.SaveChangesAsync();
+                var itemToUpdate = _dbContext.Items.FirstOrDefault(x => x.Id == item.Id);
+                if (itemToUpdate != null)
+                {
+                    _dbContext.Entry(itemToUpdate).CurrentValues.SetValues(item);
+                    await _dbContext.SaveChangesAsync();
+                }
+                var updatedItem = await _dbContext.Items.FirstOrDefaultAsync(x => x.Id == item.Id);
+                return updatedItem;
             }
-            var res = await _dbContext.Items.FirstOrDefaultAsync(x => x.Id == item.Id);
-            return res;
-        }
-        public void UpDateItemIsActive(int ItemId, int status)
-        {
-            _dbContext.Items.FirstOrDefault(x => x.Id == ItemId);
-        }
-
-        public void UpdateDepartment(Department department)
-        {
-            throw new NotImplementedException();
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, $"Error updating item with ID {item.Id}.");
+                throw new Exception($"Error updating item with ID {item.Id}.", ex);
+            }
         }
 
-        public void AddNewDepartment(Department newDepartment)
+        public void UpDateItemIsActive(int ItemId, bool status)
         {
-            _dbContext.Departments.Add(newDepartment);
+            try
+            {
+                var item = _dbContext.Items.FirstOrDefault(x => x.Id == ItemId);
+                if (item != null)
+                {
+                    item.IsActive = status;
+                    _dbContext.SaveChanges();
+                }
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, $"Error updating status for item with ID {ItemId}");
+                throw new Exception("Error updating status for item with ID", ex);
+            }
         }
+
 
         public void UpdatePrice(Price price)
         {

@@ -71,6 +71,7 @@ namespace OfferCatalog.API.Controllers
         [HttpPost]
         [ProducesResponseType(typeof(ItemViewModel), (int)HttpStatusCode.Created)]
         [ProducesResponseType((int)HttpStatusCode.BadRequest)]
+        [ProducesResponseType((int)HttpStatusCode.InternalServerError)]
         public async Task<ActionResult<ItemViewModel>> AddCatalogItem(ItemCreate item)
         {
             try
@@ -81,13 +82,13 @@ namespace OfferCatalog.API.Controllers
                     return BadRequest(new { message = "New Item cannot be null" });
                 }
                 var newItem = await _catalogService.AddItem(item);
-                _logger.LogInformation("Item added.");
+                _logger.LogInformation("Item added successfully.");
                 return CreatedAtAction(nameof(GetCatalogItemById), new { id = newItem.Id }, newItem);
             }
             catch (Exception ex)
             {
                 _logger.LogError(ex, "An unexpected error occurred while adding an item.");
-                throw new Exception("Failed to add item due to an unexpected error.", ex);
+                return StatusCode((int)HttpStatusCode.InternalServerError, $"Failed due to {ex}");
             }
         }
 

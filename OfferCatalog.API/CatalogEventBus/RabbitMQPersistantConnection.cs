@@ -15,7 +15,7 @@ namespace CatalogEventBus
     public class RabbitMQPersistantConnection : IRabbitMQPersistantConnection
     {
 
-        private readonly IConnectionFactory _connectionFactory;
+        private readonly IConnectionFactory _connectionFactory ;
         private IConnection _connection;
         public bool IsConnected => _connection is { IsOpen:  true };
 
@@ -23,7 +23,7 @@ namespace CatalogEventBus
         {
                 _connectionFactory = connectionFactory ?? throw new ArgumentNullException(nameof(connectionFactory));
         }
-        public void Publish(object message)
+        public void Publish(string eventMsgQueueName, object message)
         {
             if(!IsConnected)
             {
@@ -42,7 +42,7 @@ namespace CatalogEventBus
 
             var body = JsonSerializer.SerializeToUtf8Bytes(message);
 
-            channel.QueueDeclare(queue:"cardapplication",
+            channel.QueueDeclare(queue: eventMsgQueueName,
                                 durable: false,
                                 exclusive:false,
                                 autoDelete: false,
@@ -51,7 +51,7 @@ namespace CatalogEventBus
             policy.Execute(() =>
             {
                 channel.BasicPublish(exchange: string.Empty,
-                                     routingKey: "cardapplication",
+                                     routingKey: eventMsgQueueName,
                                      basicProperties:null,
                                      body:body);
                 Console.WriteLine($"=======>Sent {message}");

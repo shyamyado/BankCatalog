@@ -16,9 +16,9 @@ namespace OfferCatalog.API.Services
 
         public CatalogService(ICatalogRepository catalogRepository, IRabbitMQPersistantConnection rabbitMQPersistantConnection, ILogger<CatalogService> logger)
         {
-            _catalogRepository = catalogRepository;
-            _rabbitMQPersistantConnection = rabbitMQPersistantConnection;
-            _logger = logger;
+            _catalogRepository = catalogRepository ?? throw new ArgumentNullException(nameof(CatalogRepository));
+            _rabbitMQPersistantConnection = rabbitMQPersistantConnection ?? throw new ArgumentNullException(nameof(rabbitMQPersistantConnection)); ;
+            _logger = logger ?? throw new ArgumentNullException(nameof(logger));
         }
 
         public async Task<ItemViewModel> AddItem(ItemCreate item)
@@ -31,13 +31,12 @@ namespace OfferCatalog.API.Services
             catch (Exception ex)
             {
                 _logger.LogError(ex, "An error occurred while adding an item.");
-                throw new Exception("Failed to add item due to an unexpected error.", ex);
+                throw new Exception("Exception :", ex);
             }
         }
 
         public async Task<List<ItemViewModel>> GetAllItems(int page, int pageSize)
         {
-            var fileTarget = (FileTarget)LogManager.Configuration.FindTargetByName("file");
             try
             {
 
@@ -48,22 +47,36 @@ namespace OfferCatalog.API.Services
             catch (Exception ex)
             {
                 _logger.LogError($"Error getting all items: {ex.Message}");
-                throw;
+                throw new Exception("Failed to retrieve items due to an unexpected error.", ex);
             }
         }
         public async Task<ItemViewModel> GetItemById(int id)
         {
-            var res = await _catalogRepository.GetItemById(id);
-            return res;
+            try
+            {
+                var res = await _catalogRepository.GetItemById(id);
+                return res;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, $"Error getting item with ID {id}.");
+                throw new Exception($"Error getting item with ID {id}.", ex);
+            }
         }
 
         public async Task<ItemViewModel> UpdateItem(ItemUpdate item)
         {
-            var res = await _catalogRepository.UpdateItem(item);
-            return res;
+            try
+            {
+                var res = await _catalogRepository.UpdateItem(item);
+                return res;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, $"Error updating item with ID {item.Id}.");
+                throw new Exception($"Failed to update item with ID {item.Id} due to an unexpected error.", ex);
+            }
         }
-
-
 
     }
 }

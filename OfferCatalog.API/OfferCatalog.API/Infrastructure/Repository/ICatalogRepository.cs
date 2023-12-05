@@ -9,8 +9,7 @@ namespace OfferCatalog.API.Infrastructure.Repository
         public Task<List<ItemViewModel>> GetAllItems(int page, int pageSize);
         public Task<ItemViewModel> GetItemById(int id);
         public Task<ItemViewModel> UpdateItem(ItemUpdate item);
-        public void UpDateItemIsActive(int ItemId, int status);
+        public void UpDateItemIsActive(int ItemId, bool status);
         public void UpdatePrice(Price price);
-        public void UpdateDepartment(Department department);
     }
 }

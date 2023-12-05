@@ -20,7 +20,8 @@ namespace OfferCatalog.API.Services
             try
             {
                 var priceChange = new ItemPriceChangeIntegrationEvent(item);
-                _rabbitMQPersistantConnection.Publish(priceChange);
+                string eventMsgQueueName = "price_change";
+                _rabbitMQPersistantConnection.Publish(eventMsgQueueName, priceChange);
                 _logger.LogInformation("Price change has been submitted.");
                 return Task.FromResult("success");
             }

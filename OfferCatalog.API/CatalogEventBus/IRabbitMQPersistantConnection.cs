@@ -9,6 +9,6 @@ namespace CatalogEventBus
     public interface IRabbitMQPersistantConnection
     {
         bool TryConnect();
-        void Publish(object  message);
+        void Publish(string eventMsgQueueName, object message);
     }
 }

@@ -16,7 +16,8 @@ namespace OfferCatalog.API.Services
         public Task<string> ApplyCard(ApplicationForm form)
         {
             var newApplication = new ApplyCardIntegrationEvent(form);
-            _rabbitMQPersistantConnection.Publish(newApplication);
+            string eventMsgQueueName = "new_application";
+            _rabbitMQPersistantConnection.Publish(eventMsgQueueName, newApplication);
             return Task.FromResult("success");
         }
     }
